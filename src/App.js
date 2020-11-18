@@ -1,17 +1,39 @@
 import React from 'react';
+import data from "./data.json";
+import Products from "./components/Products.js";
 // App.js
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-       <a href="/">Brio Shop</a>
-      </header>
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      products: data.products
+    };
+  }
 
-      <main>Products</main>
-      <footer>All rights reserved </footer>
-    </div>
-  );
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <a href="/">Brio Shop</a>
+        </header>
+
+        <main>
+          <div className="main-container">
+            <div className="content">
+              <Products products={this.state.products}/>
+            </div>
+
+            <div className="sidebar">
+               cart items
+            </div>
+
+          </div>
+        </main>
+        <footer>All rights reserved </footer>
+      </div>
+    );
+  }
 }
 
 export default App;
