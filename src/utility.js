@@ -2,5 +2,5 @@
 
 
 export default function currency(num) {
-  return num.toString().replace('.', ',') + ' ';
+  return '$' + num.toString().replace('.', ',')  ;
 }

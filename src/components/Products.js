@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import currency from "../utility";
 
 export default class Products extends Component {
+  
 
+  
   render() {
+    
     return (
       <div>
         <ul className="main-products">
@@ -19,14 +22,24 @@ export default class Products extends Component {
                   </a>
 
                   <div className="price">
-                  <div>{currency(product.price)}</div>
+                  <div>
+                    {currency(product.price)}
+                  </div>
 
-                    <button className="button">Add To Cart</button>
+                  <button
+                    className="button primary"
+                    onClick={() => {
+                      this.props.addToCart(product)
+                    }}
+                    
+                  >
+                    Add To Cart
+                    </button>
                   </div>
                 </div>
               </li>
             
-          ))};
+          ))}
 
         </ul>
       </div>
