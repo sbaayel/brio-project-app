@@ -11,17 +11,21 @@ class App extends React.Component {
     this.state = {
       products: data.products,
       sort: "",
-      cartItem: []
+      cartItem: localStorage.getItem("cartItem") ? JSON.parse(localStorage.getItem("cartItem")) : []
     };
-  }
+  };
+
+  createOrder = (order) => {
+    alert(order.name);
+  };
 
   removeFromCart = (product) => {
     const cartItem = this.state.cartItem.slice();
     this.setState({
       cartItem: cartItem.filter(x => x._id !== product._id)
     });
-    
-  }
+    localStorage.setItem("cartItem", JSON.stringify(cartItem.filter(x => x._id !== product._id)));
+  };
 
   addToCart = (product) => {
     const cartItem = this.state.cartItem.slice();
@@ -30,14 +34,15 @@ class App extends React.Component {
       if (item._id === product._id) {
         item.count++;
         alreadyInCart = true;
-      }
+      };
     });
     if (!alreadyInCart) {
       cartItem.push({ ...product, count: 1 });
       
-    }
+    };
     this.setState({ cartItem });
-  }
+    localStorage.setItem("cartItem", JSON.stringify(cartItem));
+  };
 
   // Sort method
   sortProducts = (event) => {
@@ -47,19 +52,17 @@ class App extends React.Component {
       sort: sort,
       products: this.state.products
         .slice()
-        .sort((a, b) => 
-        sort === "lowest" ?
-          a.price > b.price ? 1 : -1:
+        .sort((a, b) =>
+          sort === "lowest" ?
+            a.price > b.price ? 1 : -1 :
           
-        sort === "highest" ?
-          a.price < b.price ? 1 : -1 :
+            sort === "highest" ?
+              a.price < b.price ? 1 : -1 :
             
-          a._id < b._id ? 1: -1
-      )
+              a._id < b._id ? 1 : -1
+        )
     }))
-  }
-
-  
+  };
 
   render() {
     return (
@@ -83,7 +86,8 @@ class App extends React.Component {
             <div className="sidebar">
               <Cart
                 cartItem={this.state.cartItem}
-                removeFromCart = {this.removeFromCart}
+                removeFromCart={this.removeFromCart}
+                createOrder = {this.createOrder}
               />
             </div>
 
@@ -92,7 +96,7 @@ class App extends React.Component {
         <footer>All rights reserved </footer>
       </div>
     );
-  }
-}
+  };
+};
 
 export default App;
