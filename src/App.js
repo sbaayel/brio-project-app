@@ -3,6 +3,8 @@ import data from "./data.json";
 import Products from "./components/Products";
 import Filter from "./components/Filter.js";
 import Cart from './components/Cart';
+import store from './store';
+import { Provider } from 'react-redux';
 // App.js
 
 class App extends React.Component {
@@ -66,6 +68,7 @@ class App extends React.Component {
 
   render() {
     return (
+      <Provider store={store}>
       <div className="App">
         <header className="App-header">
           <a href="/">Brio Shop</a>
@@ -94,7 +97,8 @@ class App extends React.Component {
           </div>
         </main>
         <footer>All rights reserved </footer>
-      </div>
+        </div>
+        </Provider>
     );
   };
 };
