@@ -14,7 +14,7 @@ class App extends React.Component {
             <header>
               <Link to="/">Brio Shopping Cart</Link>
               
-              <Link to="/admin">View Cart</Link>
+              <Link to="/admin">View All Orders</Link>
             </header>
             <main>
               <Route path="/admin" component={AdminScreen} />
