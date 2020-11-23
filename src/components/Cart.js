@@ -42,7 +42,7 @@ class Cart extends Component {
           <div className="cart cart-header">Cart is empty</div>
         ) : (
           <div className="cart cart-header ">
-            className="fas fa-shopping-cart>You have {cartItems.length} in the cart{" "}
+            You have {cartItems.length} in the cart{" "}
           </div>
         )}
 
