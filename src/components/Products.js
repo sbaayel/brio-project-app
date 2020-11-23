@@ -1,27 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import currency from "../utility";
 import Fade from "react-reveal/Fade";
 import Modal from "react-modal";
 import Zoom from "react-reveal/Zoom";
-import { connect } from 'react-redux';
-import { fetchProducts } from '../actions/productActions';
+import { connect } from "react-redux";
+import { fetchProducts } from "../actions/productActions";
+import { addToCart } from "../actions/cartActions";
 
 class Products extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: null
+      product: null,
     };
-  };
-
+  }
   componentDidMount() {
     this.props.fetchProducts();
-  };
-
+  }
   openModal = (product) => {
     this.setState({ product });
   };
-
   closeModal = () => {
     this.setState({ product: null });
   };
@@ -30,87 +28,74 @@ class Products extends Component {
     return (
       <div>
         <Fade bottom cascade>
-          {
-            !this.props.products ? (<di>Loading...</di>
-            ) : (
-          
-            <ul className="main-products">
-            {this.props.products.map((product) => (
+          {!this.props.products ? (
+            <div>Loading...</div>
+          ) : (
+            <ul className="products-container">
+              {this.props.products.map((product) => (
                 <li key={product._id}>
-                  <div className="product">
-                    <a href={"#" + product._id} onClick={() => this.openModal(product)}>
-                      <img src={product.image} alt={product.title}></img>
-  
-                      <p>
-                        {product.title}
-                      </p>
-                    </a>
-  
-                    <div className="price">
-                    <div>
-                      {currency(product.price)}
-                    </div>
-  
-                    <button
-                      className="button primary"
-                      onClick={() => {
-                        this.props.addToCart(product)
-                      }}
-                      
+                  <div className="products-content">
+                    <a
+                      href={"#" + product._id}
+                      onClick={() => this.openModal(product)}
                     >
-                      Add To Cart
+                      <img src={product.image} alt={product.title}></img>
+                      <div className="product-title">{product.title}</div>
+                    </a>
+                    <div className="product-price">
+                      <div>{currency(product.price)}</div>
+                      <button
+                        onClick={() => this.props.addToCart(product)}
+                        className="button primary"
+                      >
+                        Add To Cart
                       </button>
                     </div>
                   </div>
                 </li>
-            ))}
-              </ul>
-              )
-          }
-        
+              ))}
+            </ul>
+          )}
         </Fade>
-        {
-          product && (
-            <Modal isOpen={true} onRequestClose={this.closeModal}>
-              <Zoom>
-                <button className="close-modal" onClick={this.closeModal}>x</button>
-                <div>
-                  Modal
-                </div>
-                <div className="product-details">
-                  <img src={product.image} alt={product.title}></img>
-                  <div className="product-description">
-                    <p>
-                      <strong>
-                      {product.title}
-                    </strong>
-                    </p>
-                    <p>
-                      {product.description}
-                    </p>
-                    <div className="product-price">
-                      <div>{currency(product.price)}</div>
-                      <button className="button primary"
-                        onClick={() => {
-                          this.props.addToCart(product);
-                          this.closeModal();
+        {product && (
+          <Modal isOpen={true} onRequestClose={this.closeModal}>
+            <Zoom>
+              <button className="close-modal" onClick={this.closeModal}>
+                x
+              </button>
+              <div className="product-details">
+                <img src={product.image} alt={product.title}></img>
+                <div className="products-description">
+                  <p>
+                    <strong>{product.title}</strong>
+                  </p>
+                  <p>{product.description}</p>
+                  
+                  <div className="product-price">
+                    <div>{currency(product.price)}</div>
+                    <button
+                      className="button primary"
+                      onClick={() => {
+                        this.props.addToCart(product);
+                        this.closeModal();
                       }}
-                      >Add To Cart</button>
-                    </div>
-                    
+                    >
+                      Add To Cart
+                    </button>
                   </div>
                 </div>
-              </Zoom>
-            </Modal>
-          )
-        }
+              </div>
+            </Zoom>
+          </Modal>
+        )}
       </div>
-    )
+    );
   }
 }
-
-export default connect((state) =>
-  ({ products: state.products.items }),
-  { fetchProducts }
-)
-  (Products);
+export default connect(
+  (state) => ({ products: state.products.filteredItems }),
+  {
+    fetchProducts,
+    addToCart,
+  }
+)(Products);
